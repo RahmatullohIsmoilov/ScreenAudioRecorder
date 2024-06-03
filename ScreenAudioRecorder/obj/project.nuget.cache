@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "JLR3YfMaiZU=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\HP\\source\\repos\\ScreenAudioRecorder\\ScreenAudioRecorder\\ScreenAudioRecorder.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\HP\\.nuget\\packages\\naudio.core\\2.2.1\\naudio.core.2.2.1.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\naudio.wasapi\\2.2.1\\naudio.wasapi.2.2.1.nupkg.sha512",
+    "C:\\Users\\HP\\.nuget\\packages\\sharpavi\\3.0.1\\sharpavi.3.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
