@@ -20,5 +20,6 @@ This external library is crucial for screen recording functionality. Follow thes
 1. Download the appropriate installer for your system architecture (32-bit or 64-bit) from the provided link.
 2. Run the downloaded installer and follow the on-screen instructions to complete the installation.
 
-**Building the Project:**
+**Here's a visual guide for reference:**
 
+![x264vfw Installation Steps](**x264vfw.png**)
