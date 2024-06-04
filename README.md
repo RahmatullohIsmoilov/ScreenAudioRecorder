@@ -1,25 +1,27 @@
-## Features
+C# Screen and Audio Recorder
+Features
+Full Screen Recording: Capture everything happening on your Windows desktop in high quality.
+Simultaneous System Audio Recording: Record the audio that accompanies your screen activity, ensuring a complete recording experience.
+User-Friendly GUI: Navigate the application effortlessly with a clean and intuitive interface.
+Installation
+To use this program, you'll need to install the x264vfw software, which is available on SourceForge. You can download the latest version from the following link:
 
-* **Full Screen Recording:** Capture everything happening on your Windows desktop in high quality.
-* **Simultaneous System Audio Recording:** Record the audio that accompanies your screen activity, ensuring a complete recording experience.
-* **User-Friendly GUI:** Navigate the application effortlessly with a clean and intuitive interface.
+x264vfw - Browse Files at SourceForge.net
 
-**Requirements:**
+Once you have downloaded the x264vfw_full_44_2851bm_44825.exe file, run the installer to set up the required software.
 
-```markdown
-## Requirements
+Configuration
+After installing the x264vfw software, you can configure it using the following image file:
 
-Before using ScreenAudioRecorder, you'll need to install the following software:
+![x264vfw Configuration][x264vfw_configuring.png]
 
-* **x264vfw:**  [Download x264vfw](https://sourceforge.net/projects/x264vfw/files/)
+This image provides a step-by-step guide on how to set up the x264vfw software to work seamlessly with the C# Screen and Audio Recorder application.
 
-**x264vfw Installation:**
+Usage
+To use the C# Screen and Audio Recorder, simply run the application and click the "Start Recording" button. The program will capture your full screen and system audio, saving the recording to a file on your local machine.
 
-This external library is crucial for screen recording functionality. Follow these steps to install it:
+Contributing
+If you encounter any issues or have suggestions for improvements, please feel free to submit a pull request or open an issue on the project's GitHub repository.
 
-1. Download the appropriate installer for your system architecture (32-bit or 64-bit) from the provided link.
-2. Run the downloaded installer and follow the on-screen instructions to complete the installation.
-
-**Here's a visual guide for reference:**
-
-![x264vfw Installation Steps](x264vfw_configuring.png)
+License
+This project is licensed under the MIT License.
