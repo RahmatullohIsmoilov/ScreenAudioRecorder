@@ -22,4 +22,4 @@ This external library is crucial for screen recording functionality. Follow thes
 
 **Here's a visual guide for reference:**
 
-![x264vfw Installation Steps](x264vfw.png)
+![x264vfw Installation Steps](x264vfw_configuring.png)
