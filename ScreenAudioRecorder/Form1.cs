@@ -1,12 +1,12 @@
-using System;
+using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
+using Microsoft.Win32.SafeHandles;
 using NAudio.Wave;
-using SharpAvi.Output;
+using SharpAvi;
 using SharpAvi.Codecs;
+using SharpAvi.Output;
 
 namespace ScreenAudioRecorder
 {
@@ -48,10 +48,12 @@ namespace ScreenAudioRecorder
             recorder = new SimpleRecorder(outputFileName, screenBounds);
 
             stopwatch.Start();
+            timer1.Start();
         }
 
         private void BtnStop_Clicked(object sender, EventArgs e)
         {
+            timer1.Stop();
             btn_record.Enabled = true;
             btn_stop.Enabled = false;
             recorder.Dispose();
@@ -81,6 +83,9 @@ namespace ScreenAudioRecorder
         private readonly Bitmap captureBitmap;
         private readonly byte[] captureBuffer;
         private readonly Graphics captureGraphics;
+        private readonly Stopwatch sileceWatch = new Stopwatch();
+        private readonly byte[] silenceBuffer = new byte[bitsPerSample * channels * sampleRate / 8];
+        private long silenceTicks;
 
         public SimpleRecorder(string fileName, Rectangle rectangle)
         {
@@ -95,7 +100,9 @@ namespace ScreenAudioRecorder
                 EmitIndex1 = true,
             };
 
-            videoStream = writer.AddUncompressedVideoStream(rectangle.Width, rectangle.Height);
+            //videoStream = writer.AddUncompressedVideoStream(rectangle.Width, rectangle.Height);
+            videoStream = writer.AddMpeg4VcmVideoStream(
+                        rectangle.Width, rectangle.Height, framerate, codec: CodecIds.X264);
             videoStream.Name = "Screencast";
 
             audioStream = writer.AddAudioStream(channels, sampleRate, bitsPerSample);
@@ -111,6 +118,7 @@ namespace ScreenAudioRecorder
             waitableTimer.Elapsed += WaitableTimer_Elapsed;
             waitableTimer.Start();
             audioSource.StartRecording();
+            sileceWatch.Start();
         }
 
         private void WaitableTimer_Elapsed(object sender, EventArgs e)
@@ -124,22 +132,32 @@ namespace ScreenAudioRecorder
 
         private void AudioSource_DataAvailable(object sender, WaveInEventArgs e)
         {
-            if (e.BytesRecorded > 0)
+            var elapsedTicks = sileceWatch.ElapsedTicks;
+            var silenceTime = elapsedTicks - silenceTicks;
+            silenceTicks = elapsedTicks;
+            lock (this)
             {
-                lock (this)
+                if (e.BytesRecorded > 0)
                 {
                     audioStream.WriteBlock(e.Buffer, 0, e.BytesRecorded);
+                }
+                else if (silenceTime > 0)
+                {
+                    var slienceBytes = silenceBuffer.Length * silenceTime / TimeSpan.TicksPerSecond;
+                    audioStream.WriteBlock(silenceBuffer, 0, (int)slienceBytes);
                 }
             }
         }
 
         public void Dispose()
         {
-            waitableTimer.Stop();
+            waitableTimer?.Stop();
             audioSource?.StopRecording();
-            writer.Close();
+            writer?.Close();
+            sileceWatch?.Stop();
+            waitableTimer?.Dispose();
             captureGraphics?.Dispose();
-            captureBitmap.Dispose();
+            captureBitmap?.Dispose();
         }
 
         private void GetScreenshot(byte[] buffer)
@@ -153,37 +171,158 @@ namespace ScreenAudioRecorder
         }
     }
 
-    public class WaitableTimer : IDisposable
+    public class WaitableTimer : Component
     {
-        private readonly System.Threading.Timer timer;
+        public long IntervalTicks { get; set; }
+        public decimal Interval
+        {
+            get
+            {
+                return (decimal)IntervalTicks / TimeSpan.TicksPerMillisecond;
+            }
+            set
+            {
+                IntervalTicks = (long)value * TimeSpan.TicksPerMillisecond;
+            }
+        }
+
         public event EventHandler Elapsed;
+
+        private readonly TimerHandle hTimer;
+        private readonly EventWaitHandle cancelHandle = new ManualResetEvent(false);
+        private Thread thread;
+        private bool enabled;
 
         public WaitableTimer()
         {
-            timer = new System.Threading.Timer(TimerCallback);
+            hTimer = new TimerHandle();
         }
 
-        public long IntervalTicks { get; set; }
+        public WaitableTimer(IContainer container) : this()
+        {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+            container.Add(this);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            hTimer.Dispose();
+            cancelHandle.Dispose();
+        }
 
         public void Start()
         {
-            var interval = TimeSpan.FromTicks(IntervalTicks).Milliseconds;
-            timer.Change(interval, interval);
+            Enabled = true;
         }
 
         public void Stop()
         {
-            timer.Change(Timeout.Infinite, Timeout.Infinite);
+            Enabled = false;
         }
 
-        private void TimerCallback(object state)
+        public bool Enabled
         {
-            Elapsed?.Invoke(this, EventArgs.Empty);
+            get
+            {
+                return enabled;
+            }
+            set
+            {
+                if (enabled != value)
+                {
+                    enabled = value;
+                    if (value)
+                    {
+                        cancelHandle.Reset();
+                        thread = new Thread(new ParameterizedThreadStart(Loop));
+                        thread.Start(this);
+                    }
+                    else
+                    {
+                        cancelHandle.Set();
+                        thread.Join();
+                        thread = null;
+                    }
+                }
+            }
         }
 
-        public void Dispose()
+        protected virtual void OnElapsed(EventArgs e)
         {
-            timer.Dispose();
+            Elapsed?.Invoke(this, e);
         }
+
+        private static void Loop(object args)
+        {
+            var owner = (WaitableTimer)args;
+            WaitHandle[] handles = new WaitHandle[] { owner.cancelHandle, owner.hTimer };
+            long ticks = owner.IntervalTicks;
+            DateTime utc = DateTime.UtcNow;
+            long dueTime = utc.ToFileTimeUtc() + ticks;
+            owner.hTimer.SetDueTime(dueTime);
+            while (WaitHandle.WaitAny(handles) == WAIT_1)
+            {
+                owner.OnElapsed(EventArgs.Empty);
+                dueTime += ticks;
+                owner.hTimer.SetDueTime(dueTime);
+            }
+        }
+
+        private class TimerHandle : WaitHandle
+        {
+            public TimerHandle()
+            {
+                var hTimer = CreateWaitableTimer(IntPtr.Zero, false, null);
+                if (hTimer == null || hTimer.IsInvalid)
+                {
+                    throw new Win32Exception();
+                }
+                SafeWaitHandle = hTimer;
+            }
+
+            public void SetTicks(long ticks)
+            {
+                long dueTime = -1 * ticks;
+                if (!SetWaitableTimer(SafeWaitHandle, ref dueTime, 0, IntPtr.Zero, IntPtr.Zero, false))
+                {
+                    throw new Win32Exception();
+                }
+            }
+
+            public void SetDueTime(long dueTime)
+            {
+                if (!SetWaitableTimer(SafeWaitHandle, ref dueTime, 0, IntPtr.Zero, IntPtr.Zero, false))
+                {
+                    throw new Win32Exception();
+                }
+            }
+
+            public void Cancel()
+            {
+                if (!CancelWaitableTimer(SafeWaitHandle))
+                {
+                    throw new Win32Exception();
+                }
+            }
+
+        }
+
+        const int WAIT_1 = 1;
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        static extern SafeWaitHandle CreateWaitableTimer(
+            IntPtr lpTimerAttributes, bool bManualReset, string lpTimerName);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool SetWaitableTimer(
+            SafeWaitHandle hTimer, [In] ref long pDueTime, int lPeriod,
+            IntPtr pfnCompletionRoutine, IntPtr lpArgToCompletionRoutine, bool fResume);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool CancelWaitableTimer(SafeWaitHandle hTimer);
     }
 }

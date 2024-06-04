@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\HP\\source\\repos\\ScreenAudioRecorder\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C806E46E-36C5-426A-9206-A8061A6FEBB6}|ScreenAudioRecorder\\ScreenAudioRecorder.csproj|C:\\Users\\HP\\source\\repos\\ScreenAudioRecorder\\screenaudiorecorder\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{C806E46E-36C5-426A-9206-A8061A6FEBB6}|ScreenAudioRecorder\\ScreenAudioRecorder.csproj|solutionrelative:screenaudiorecorder\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{C806E46E-36C5-426A-9206-A8061A6FEBB6}|ScreenAudioRecorder\\ScreenAudioRecorder.csproj|c:\\users\\hp\\source\\repos\\screenaudiorecorder\\screenaudiorecorder\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C806E46E-36C5-426A-9206-A8061A6FEBB6}|ScreenAudioRecorder\\ScreenAudioRecorder.csproj|solutionrelative:screenaudiorecorder\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C806E46E-36C5-426A-9206-A8061A6FEBB6}|ScreenAudioRecorder\\ScreenAudioRecorder.csproj|C:\\Users\\HP\\source\\repos\\ScreenAudioRecorder\\screenaudiorecorder\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{C806E46E-36C5-426A-9206-A8061A6FEBB6}|ScreenAudioRecorder\\ScreenAudioRecorder.csproj|solutionrelative:screenaudiorecorder\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,11 +18,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Form1.cs [Design]",
               "DocumentMoniker": "C:\\Users\\HP\\source\\repos\\ScreenAudioRecorder\\ScreenAudioRecorder\\Form1.cs",
               "RelativeDocumentMoniker": "ScreenAudioRecorder\\Form1.cs",
@@ -39,15 +39,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\HP\\source\\repos\\ScreenAudioRecorder\\ScreenAudioRecorder\\Form1.cs",
               "RelativeDocumentMoniker": "ScreenAudioRecorder\\Form1.cs",
               "ToolTip": "C:\\Users\\HP\\source\\repos\\ScreenAudioRecorder\\ScreenAudioRecorder\\Form1.cs",
               "RelativeToolTip": "ScreenAudioRecorder\\Form1.cs",
-              "ViewState": "AQIAAKYAAAAAAAAAAAAswK0AAAAaAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAADUBAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-26T09:12:52.892Z"
+              "WhenOpened": "2024-05-26T09:12:52.892Z",
+              "EditorCaption": ""
             }
           ]
         }

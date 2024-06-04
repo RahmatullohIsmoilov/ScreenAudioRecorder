@@ -59,7 +59,6 @@
             // 
             // timer1
             // 
-            timer1.Enabled = true;
             timer1.Tick += TimerTick;
             // 
             // lbl_Timer

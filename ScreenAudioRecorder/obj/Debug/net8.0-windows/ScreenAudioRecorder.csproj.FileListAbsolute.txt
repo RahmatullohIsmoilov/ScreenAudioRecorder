@@ -19,3 +19,4 @@ C:\Users\HP\source\repos\ScreenAudioRecorder\ScreenAudioRecorder\obj\Debug\net8.
 C:\Users\HP\source\repos\ScreenAudioRecorder\ScreenAudioRecorder\obj\Debug\net8.0-windows\ScreenAudioRecorder.pdb
 C:\Users\HP\source\repos\ScreenAudioRecorder\ScreenAudioRecorder\obj\Debug\net8.0-windows\ScreenAudioRecorder.genruntimeconfig.cache
 C:\Users\HP\source\repos\ScreenAudioRecorder\ScreenAudioRecorder\obj\Debug\net8.0-windows\ref\ScreenAudioRecorder.dll
+C:\Users\HP\source\repos\ScreenAudioRecorder\ScreenAudioRecorder\obj\Debug\net8.0-windows\ScreenAudioRecorder.sourcelink.json
