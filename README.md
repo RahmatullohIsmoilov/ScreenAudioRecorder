@@ -20,8 +20,6 @@ This section is optional, but if you'd like to further configure x264vfw for opt
 
 ![x264vfw Configuration](x264vfw_configuring.png)
 
-**Note:** Ensure the image file "x264vfw_configuring.png" is uploaded to your GitHub repository.
-
 ## Usage
 
 To use the C# Screen and Audio Recorder, simply run the application and click the "Start" button. The program will capture your full screen and system audio, saving the recording to a file on your local machine.
