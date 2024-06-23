@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ScreenAudioRecorder")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3fa457e22c6235cc6ca24b51a4feb277dbb36d46")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b633ccb51c1c610b7bc1189645fc369656b19e94")]
 [assembly: System.Reflection.AssemblyProductAttribute("ScreenAudioRecorder")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ScreenAudioRecorder")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
